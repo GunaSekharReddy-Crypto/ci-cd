@@ -1,0 +1,97 @@
+pipeline {
+
+    agent any
+
+    environment {
+        IMAGE_NAME = "gunasekhar8412/version-app"
+    }
+
+    stages {
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
+            }
+        }
+
+        stage('DockerHub Login') {
+            steps {
+
+                withCredentials([usernamePassword(
+                    credentialsId: '7ff52da4-733a-43a7-b409-02860ce17765',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                sh 'docker push ${IMAGE_NAME}:${BUILD_NUMBER}'
+            }
+        }
+
+        stage('Deploy to Dev') {
+
+            when {
+                branch 'develop'
+            }
+
+            steps {
+
+                sh '''
+                docker stop dev-container || true
+                docker rm dev-container || true
+
+                docker run -d \
+                --name dev-container \
+                -p 4001:4000 \
+                ${IMAGE_NAME}:${BUILD_NUMBER}
+                '''
+            }
+        }
+
+        stage('Deploy to QA') {
+
+            when {
+                branch 'qa'
+            }
+
+            steps {
+
+                sh '''
+                docker stop qa-container || true
+                docker rm qa-container || true
+
+                docker run -d \
+                --name qa-container \
+                -p 4002:4000 \
+                ${IMAGE_NAME}:${BUILD_NUMBER}
+                '''
+            }
+        }
+
+        stage('Deploy to Production') {
+
+            when {
+                branch 'main'
+            }
+
+            steps {
+
+                sh '''
+                docker stop prod-container || true
+                docker rm prod-container || true
+
+                docker run -d \
+                --name prod-container \
+                -p 4000:4000 \
+                ${IMAGE_NAME}:${BUILD_NUMBER}
+                '''
+            }
+        }
+    }
+}
