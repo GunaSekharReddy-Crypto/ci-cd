@@ -1,6 +1,6 @@
 const http = require("http");
 
-const VERSION = "Version 1";
+const VERSION = "DEV Version";
 
 http.createServer((req, res) => {
     res.write(`Application Running - ${VERSION}`);
