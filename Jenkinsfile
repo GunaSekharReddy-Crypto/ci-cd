@@ -26,10 +26,8 @@ pipeline {
                 -p 4001:4001 \
                 ${IMAGE_NAME}:${IMAGE_TAG}
                 '''
+		echo "Application Running"
             }
-	stage ('Post Process")
-	    steps {
-		echo "Building application"
-        }
+   	  }
     }
 }
