@@ -23,7 +23,7 @@ pipeline {
 
                 docker run -d \
                 --name version-app-container \
-                -p 4000:4000 \
+                -p 4001:4001 \
                 ${IMAGE_NAME}:${IMAGE_TAG}
                 '''
             }
