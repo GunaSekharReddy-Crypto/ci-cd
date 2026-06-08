@@ -4,8 +4,20 @@ pipeline {
 
     environment {
         IMAGE_NAME = "gunasekhar8412/version-app"
+        IMAGE_TAG = "v1"
+    }
+
+    stages {
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
+            }
+        }
+
         stage('DockerHub Login') {
             steps {
+
                 withCredentials([usernamePassword(
                     credentialsId: '7ff52da4-733a-43a7-b409-02860ce17765',
                     usernameVariable: 'DOCKER_USER',
