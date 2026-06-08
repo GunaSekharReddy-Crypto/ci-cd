@@ -27,6 +27,9 @@ pipeline {
                 ${IMAGE_NAME}:${IMAGE_TAG}
                 '''
             }
+	stage ('Post Process")
+	    steps {
+		echo "Building application"
         }
     }
 }
