@@ -1,39 +1,10 @@
-name: CI Example
+name: Hello World Workflow
 
-# Triggers that control when the workflow will run
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+on: [push] # Triggers the workflow every time you push code
 
-# A workflow run is made up of one or more jobs
 jobs:
-  build-and-test:
-    # The type of runner that the job will run on
+  say-hello:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Step 1: Checks-out your repository under $GITHUB_WORKSPACE so your job can access it
-      - name: Check out repository code
-        uses: actions/checkout@v4
-
-      # Step 2: Set up a runtime environment (Node.js example)
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      # Step 3: Install project dependencies
-      - name: Install dependencies
-        run: npm ci
-
-      # Step 4: Run your test suite
-      - name: Run tests
-        run: npm test
-
-      # Step 5: Execute a simple echo command to verify execution
-      - name: Complete message
-        run: echo "Workflow executed successfully!"
+      - name: Print Message
+        run: echo "Hello World"
