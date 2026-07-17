@@ -1,10 +1,12 @@
-name: Hello World Workflow
+name: My First Workflow
 
-on: [push] # Triggers the workflow every time you push code
+on:
+  push:
 
 jobs:
-  say-hello:
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Print Message
         run: echo "Hello World"
