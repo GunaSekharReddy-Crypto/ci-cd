@@ -1,0 +1,23 @@
+name: Build Application
+
+on:
+  push:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Download Repository
+        uses: actions/checkout@v4
+
+      - name: Show Files
+        run: ls -la
+
+      - name: Print Current Directory
+        run: pwd
+
+      - name: Print Message
+        run: echo "Repository downloaded successfully!"
